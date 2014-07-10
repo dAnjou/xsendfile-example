@@ -5,13 +5,17 @@ Django project that shows how to serve files with Apache and X-SENDFILE by using
 
 ## Usage
 
-Install [Vagrant](http://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/) (Vagrant is a tool to quickly spin up and bootstrap (aka provision) VMs).
+Install [Vagrant](http://www.vagrantup.com/), [VirtualBox](https://www.virtualbox.org/) and [Fabric](http://www.fabfile.org/).
 
-Clone this repository and edit the `Vagrantfile`:
+*Vagrant is a tool to quickly spin up and bootstrap (aka provision) VMs, in this case VirtualBox VMs. Fabric is a command-line tool for application deployment via SSH.*
 
-    config.vm.synced_folder "/PATH/TO/MEDIA/DIRECTORY/ON/HOST/MACHINE", "/home/vagrant/media"
+Clone this repository.
 
 Run `vagrant up`. The first time it will take a while because it will download a VirtualBox image. If everything ran through you should be to access the site at http://localhost:8080/.
+
+Run `fab --set=vagrant_home="." deploy`. `vagrant_home` is the location where the `Vagrantfile` lies. This is needed to get the SSH config for the vagrant VM to be able to login.
+
+## Notes
 
 If you want to run the project using Django's development server you have to set another backend in `settings.py`:
 

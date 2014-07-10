@@ -4,6 +4,4 @@ apt-get install -y \
     python-virtualenv
 a2enmod wsgi
 a2enmod xsendfile
-a2dissite 000-default
-cp /home/vagrant/xsendfile_example/xsendfile_example.vhost /etc/apache2/sites-available/xsendfile_example
-a2ensite xsendfile_example
+service apache2 restart
