@@ -23,6 +23,8 @@ env.hosts = ['default']
 def deploy():
     # create package from code
     commit = local('git stash create', capture=True)
+    if not commit:
+        commit = 'HEAD'
     local('git archive %s > %s' % (commit, PACKAGE_NAME))
     # copy package to VM
     put(PACKAGE_NAME, '~')
