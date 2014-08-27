@@ -1,6 +1,7 @@
 <VirtualHost *:80>
 
 XSendFile On
+XSendFilePath /home/vagrant/media
 
 WSGIScriptAlias / /home/vagrant/xsendfile_example/xsendfile_example/wsgi.py
 WSGIDaemonProcess xsendfile_example python-path=/home/vagrant/xsendfile_example:/home/vagrant/venv/lib/python2.7/site-packages
