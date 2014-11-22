@@ -1,0 +1,27 @@
+---
+- hosts: all
+  remote_user: vagrant
+  tasks:
+  - apt: pkg={{ item }} state=latest
+    with_items:
+      - apache2
+      - libapache2-mod-wsgi
+      - libapache2-mod-xsendfile
+      - python-pip
+      - python-virtualenv
+    become: true
+  - apache2_module: name={{ item }}
+    with_items:
+      - wsgi
+      - xsendfile
+    become: true
+  - pip: name={{ item }} virtualenv=/home/vagrant/venv
+    with_items:
+      - django==1.4.5
+      - django-sendfile
+    notify:
+    - restart apache
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
+      become: true
