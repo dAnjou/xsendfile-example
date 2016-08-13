@@ -19,6 +19,7 @@ def serve_file(request, path):
             if os.path.isfile(os.path.join(path, f)):
                 files.append(f)
         t = Template("""
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <ul>
     {% for f in files %}<li>
         <a href="./{{ f }}">{{ f }}</a>
