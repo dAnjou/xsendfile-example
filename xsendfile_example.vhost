@@ -9,8 +9,7 @@ WSGIProcessGroup xsendfile_example
 
 <Directory /home/vagrant/xsendfile_example/xsendfile_example>
 	<Files wsgi.py>
-		Order deny,allow
-		Allow from all
+		Require all granted
 	</Files>
 </Directory>
 

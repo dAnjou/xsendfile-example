@@ -39,7 +39,7 @@ def deploy():
             run('echo "%s" | base64 -d > red_dot.png' % RED_DOT)
     # setup VirtualHost
     put('xsendfile_example.vhost',
-        '/etc/apache2/sites-available/xsendfile_example', use_sudo=True)
+        '/etc/apache2/sites-available/xsendfile_example.conf', use_sudo=True)
     sudo('a2dissite 000-default')
     sudo('a2ensite xsendfile_example')
     sudo('service apache2 restart')
