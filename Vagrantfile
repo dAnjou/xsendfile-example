@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
-  config.vm.provision "shell", path: "./root_provision.sh"
-  config.vm.provision "shell", path: "./user_provision.sh",
+  config.vm.provision "shell", path: "./provisioning/default/root_provision.sh"
+  config.vm.provision "shell", path: "./provisioning/default/user_provision.sh",
     privileged: false
 end
