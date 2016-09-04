@@ -1,0 +1,18 @@
+@startuml
+Client -> Webserver : GET /lorem.webm
+Webserver -> Application
+rnote over Application
+do something
+like checking
+the requesting
+user's permissions
+endrnote
+rnote over Application
+set X-SENDFILE header
+endrnote
+Application -> Webserver
+rnote over Webserver
+check X-SENDFILE header
+endrnote
+Webserver -> Client : serve lorem.webm
+@enduml

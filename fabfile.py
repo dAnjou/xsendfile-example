@@ -1,6 +1,15 @@
 from tempfile import NamedTemporaryFile
+from os.path import join, abspath
 from fabric.api import *
+from fabric.colors import red
+from fabtools import python
+from fabtools.vagrant import vagrant
 
+USAGE=red("""Usage:
+    fab -H <host> deploy       - Deploy on <host>
+    fab vagrant:default deploy - Deploy on a Vagrant VM
+    fab vagrant:ansible deploy - Deploy on an Ansible provisioned Vagrant VM
+""")
 PACKAGE_NAME = 'xsendfile-example.tar'
 RED_DOT = """iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAA
 ABGdBTUEAALGPC/xhBQAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9Y
@@ -10,17 +19,13 @@ exdlYvBBeZ7jqch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq
 2MLaI97CER3N0vr4MkhoXe0rZigAAAABJRU5ErkJggg=="""
 
 
-# use SSH configuration of the vagrant VM
-env.use_ssh_config = True
-with lcd(env.vagrant_home):
-    ssh_config = local('vagrant ssh-config', capture=True)
-with NamedTemporaryFile(delete=False) as f:
-    f.write(ssh_config)
-env.ssh_config_path = f.name
-env.hosts = ['default']
-
-
+@task
 def deploy():
+    """
+    deploy xsendfile_example application
+    """
+    if not env.hosts:
+        abort(USAGE)
     # create package from code
     commit = local('git stash create', capture=True)
     if not commit:
@@ -33,13 +38,11 @@ def deploy():
         run('mkdir xsendfile_example', quiet=True)
         with cd('xsendfile_example'):
             run('tar -xf ~/%s' % PACKAGE_NAME)
+            # install application dependencies
+            with python.virtualenv('/home/vagrant/venv'):
+                python.install_requirements('requirements.txt')
         # create sample media file
         run('mkdir media', quiet=True)
         with cd('media'):
             run('echo "%s" | base64 -d > red_dot.png' % RED_DOT)
-    # setup VirtualHost
-    put('xsendfile_example.vhost',
-        '/etc/apache2/sites-available/xsendfile_example.conf', use_sudo=True)
-    sudo('a2dissite 000-default')
-    sudo('a2ensite xsendfile_example')
     sudo('service apache2 restart')

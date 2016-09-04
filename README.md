@@ -1,19 +1,25 @@
 xsendfile-example
 =================
 
-Django project that shows how to serve files with Apache and X-SENDFILE by using [django-sendfile](https://github.com/johnsensible/django-sendfile).
+Django application that shows how to [serve files with Apache and X-SENDFILE](https://speakerdeck.com/danjou/protecting-static-files-in-your-web-app) by using [django-sendfile](https://github.com/johnsensible/django-sendfile).
+
+![sequence diagram showing a request/response cycle with X-SENDFILE](diagram.png)
+
+---
+
+This project also serves as a playground for other technologies.
 
 ## Usage
 
-Install [Vagrant](http://www.vagrantup.com/), [VirtualBox](https://www.virtualbox.org/) and [Fabric](http://www.fabfile.org/).
+Install [Vagrant](http://www.vagrantup.com/), [VirtualBox](https://www.virtualbox.org/) and [Fabric](http://www.fabfile.org/)+[fabtools](http://fabtools.readthedocs.io).
 
 *Vagrant is a tool to quickly spin up and bootstrap (aka provision) VMs, in this case VirtualBox VMs. Fabric is a command-line tool for application deployment via SSH.*
 
 Clone this repository.
 
-Run `vagrant up`. The first time it will take a while because it will download a VirtualBox image. If everything ran through you should be to access the site at http://localhost:8080/.
+Run `vagrant up default`. The first time it will take a while because it will download a VirtualBox image. If everything ran through you should be to access the site at http://localhost:8080/.
 
-Run `fab --set=vagrant_home="." deploy`. `vagrant_home` is the location where the `Vagrantfile` lies. This is needed to get the SSH config for the vagrant VM to be able to login.
+Run `fab vagrant:default deploy`.
 
 ## Notes
 

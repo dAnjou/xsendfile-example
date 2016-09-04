@@ -15,12 +15,17 @@
       - wsgi
       - xsendfile
     become: true
-  - pip: name={{ item }} virtualenv=/home/vagrant/venv
-    with_items:
-      - django==1.4.5
-      - django-sendfile
+  - command: a2dissite 000-default
+    become: true
+  - template: src=xsendfile_example.vhost dest=/etc/apache2/sites-available/xsendfile_example.conf
+    become: true
+  - command: a2ensite xsendfile_example
+    args:
+      creates: /etc/apache2/sites-enabled/xsendfile_example.conf
     notify:
-    - restart apache
+      - restart apache
+    become: true
+  - pip: name=pip virtualenv=/home/vagrant/venv
   handlers:
     - name: restart apache
       service: name=apache2 state=restarted
