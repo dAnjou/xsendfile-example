@@ -1,2 +1,2 @@
-django==1.4.22
+django==2.1.5
 django-sendfile==0.3.11
