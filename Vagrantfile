@@ -21,8 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         default_machine.vm.provision "shell",
             inline: "apt-get update && \
             apt-get install -y \
-            apache2 libapache2-mod-wsgi libapache2-mod-xsendfile python-pip \
-            python-virtualenv &&
+            apache2 libapache2-mod-wsgi libapache2-mod-xsendfile python3 python3.4-venv && \
             a2enmod wsgi && \
             a2enmod xsendfile && \
             a2dissite 000-default"
@@ -35,7 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             a2ensite xsendfile_example && \
             service apache2 restart"
         default_machine.vm.provision "shell",
-            inline: "virtualenv /home/vagrant/venv",
+            inline: "python3 -m venv /home/vagrant/venv && source /home/vagrant/venv/bin/activate && pip install --upgrade pip",
             privileged: false
     end
 

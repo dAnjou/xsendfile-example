@@ -4,16 +4,16 @@ FROM httpd:2.4
 RUN apt-get update && apt-get install -y \
     build-essential \
     wget \
-    python-dev \
-    python2.7 \
+    python3-dev \
+    python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # install mod_wsgi
-RUN wget -O /tmp/mod_wsgi.tar.gz https://github.com/GrahamDumpleton/mod_wsgi/archive/4.5.6.tar.gz \
+RUN wget -O /tmp/mod_wsgi.tar.gz https://github.com/GrahamDumpleton/mod_wsgi/archive/4.6.5.tar.gz \
     && mkdir /tmp/mod_wsgi \
     && tar -xf /tmp/mod_wsgi.tar.gz -C /tmp/mod_wsgi --strip-components=1 \
     && cd /tmp/mod_wsgi \
-    && ./configure \
+    && ./configure --with-python=/usr/bin/python3 \
     && make \
     && make install \
     && rm -r /tmp/*
@@ -28,13 +28,13 @@ RUN wget -O /tmp/mod_xsendfile.tar.gz https://tn123.org/mod_xsendfile/mod_xsendf
 
 # install pip
 RUN wget -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py \
-    && python2.7 /tmp/get-pip.py \
+    && python3 /tmp/get-pip.py \
     && rm -r /tmp/*
 
 COPY ./provisioning/docker/httpd.conf /usr/local/apache2/conf/httpd.conf
 
 COPY ./requirements.txt /tmp
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
 
 RUN mkdir -p /xsendfile-example/xsendfile_example
 WORKDIR /xsendfile-example

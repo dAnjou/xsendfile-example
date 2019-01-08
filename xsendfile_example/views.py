@@ -7,7 +7,7 @@ from django.conf import settings
 from sendfile import sendfile
 
 
-def serve_file(request, path):
+def serve_file(request, path='.'):
     path = os.path.join(settings.SENDFILE_ROOT_DIR, path)
 
     if os.path.isfile(path):

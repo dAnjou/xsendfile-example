@@ -1,5 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path
 
-urlpatterns = patterns('',
-    url(r'^(?P<path>.*)$', 'xsendfile_example.views.serve_file', name='serve_file'),
-)
+from xsendfile_example import views
+
+urlpatterns = [
+    path('', views.serve_file),
+    path('<path:path>', views.serve_file),
+]
